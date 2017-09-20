@@ -63,7 +63,11 @@ export function findGraphQLTags(
         fragments.properties.forEach(property => {
           const tagName = getGraphQLTagName(property.value.tag);
           const template = getGraphQLText(property.value.quasi);
-          if (tagName === 'graphql' || tagName === 'graphql.experimental') {
+          if (
+            tagName === 'graphql' ||
+            tagName === 'gql' ||
+            tagName === 'graphql.experimental'
+          ) {
             const loc = property.value.loc;
             const range = new Range(
               new Position(loc.start.line - 1, loc.start.column),
@@ -79,7 +83,11 @@ export function findGraphQLTags(
       } else {
         const tagName = getGraphQLTagName(fragments.tag);
         const template = getGraphQLText(fragments.quasi);
-        if (tagName === 'graphql' || tagName === 'graphql.experimental') {
+        if (
+          tagName === 'graphql' ||
+          tagName === 'gql' ||
+          tagName === 'graphql.experimental'
+        ) {
           const loc = fragments.loc;
           const range = new Range(
             new Position(loc.start.line - 1, loc.start.column),
@@ -101,7 +109,11 @@ export function findGraphQLTags(
     TaggedTemplateExpression: node => {
       const tagName = getGraphQLTagName(node.tag);
       if (tagName != null) {
-        if (tagName === 'graphql' || tagName === 'graphql.experimental') {
+        if (
+          tagName === 'graphql' ||
+          tagName === 'gql' ||
+          tagName === 'graphql.experimental'
+        ) {
           const loc = node.quasi.quasis[0].loc;
           const range = new Range(
             new Position(loc.start.line - 1, loc.start.column),
@@ -126,7 +138,7 @@ const CREATE_CONTAINER_FUNCTIONS = {
   createRefetchContainer: true,
 };
 
-const IDENTIFIERS = {graphql: true};
+const IDENTIFIERS = {graphql: true, gql: true};
 
 const IGNORED_KEYS = {
   comments: true,

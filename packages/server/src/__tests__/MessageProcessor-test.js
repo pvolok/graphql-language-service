@@ -12,7 +12,7 @@ import {expect} from 'chai';
 import {Position, Range} from 'graphql-language-service-utils';
 import {beforeEach, describe, it} from 'mocha';
 
-import {MessageProcessor} from '../MessageProcessor';
+import {getQueryAndRange, MessageProcessor} from '../MessageProcessor';
 
 describe('MessageProcessor', () => {
   const messageProcessor = new MessageProcessor();
@@ -163,5 +163,21 @@ describe('MessageProcessor', () => {
 
     const result = await messageProcessor.handleDefinitionRequest(test);
     expect(result[0].uri).to.equal(`file://${queryDir}/testFragment.graphql`);
+  });
+});
+
+describe('MessageProcessor.getQueryAndRange', () => {
+  it('finds tagged queries in js', () => {
+    const content = `
+      graphql\`query graphql { id }\`;
+      graphql.experimental\`query graphql_experimental { id }\`;
+      gql\`query gql { id }\`;
+    `;
+    const queries = getQueryAndRange(content, 'file.js').map(x => x.query);
+    expect(queries).to.deep.equal([
+      'query graphql { id }',
+      'query graphql_experimental { id }',
+      'query gql { id }',
+    ]);
   });
 });

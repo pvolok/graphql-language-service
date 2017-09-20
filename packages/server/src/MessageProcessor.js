@@ -487,6 +487,7 @@ export function getQueryAndRange(
   if (extname(uri) === '.js') {
     if (
       text.indexOf('graphql`') === -1 &&
+      text.indexOf('gql`') === -1 &&
       text.indexOf('graphql.experimental`') === -1
     ) {
       return [];
